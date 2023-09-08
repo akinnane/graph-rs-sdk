@@ -191,6 +191,13 @@ pub enum ResourceIdentity {
     Reports,
     RoleDefinitions,
     RoleManagement,
+    RoleManagementDirectory,
+    RoleManagementDirectoryRoleAssignmentRequests,
+    RoleManagementDirectoryRoleAssignmentSchedules,
+    RoleManagementDirectoryRoleAssignments,
+    RoleManagementDirectoryRoleEligibilityScheduleInstances,
+    RoleManagementDirectoryRoleEligibilityScheduleRequests,
+    RoleManagementDirectoryRoleEligibilitySchedules,
     Schedule,
     SchemaExtensions,
     ScopedRoleMemberOf,
@@ -358,7 +365,13 @@ impl ToString for ResourceIdentity {
             ResourceIdentity::TermStoreSetsRelations => "relations".into(),
             ResourceIdentity::TermStoreSetsTerms => "terms".into(),
             ResourceIdentity::Custom => "".into(),
-
+            ResourceIdentity::RoleManagementDirectory => "directory".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleAssignmentSchedules => "roleAssignmentSchedules".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleAssignmentRequests => "roleAssignmentRequests".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleAssignments => "roleAssignments".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleInstances => "roleEligibilityScheduleInstances".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleRequests => "roleEligibilityScheduleRequests".into(),
+            ResourceIdentity::RoleManagementDirectoryRoleEligibilitySchedules => "roleEligibilitySchedules".into(),
             _ => self.as_ref().to_camel_case(),
         }
     }

@@ -1053,6 +1053,15 @@ impl ResourceSettings {
 				.api_client_links(get_users_api_client_links(ri))
 				.build()
 				.unwrap(),
+
+			ResourceIdentity::RoleManagement => ResourceSettings::builder(path_name, ri)
+				.imports(vec!["crate::role_management::*"])
+				.api_client_links(vec![
+					ApiClientLinkSettings(Some("RoleManagementApiClient"), vec![
+						ApiClientLink::Struct("directory", "RoleManagementDirectoryApiClient")])])
+				.build()
+				.unwrap(),
+
 			_ => ResourceSettings::default(path_name, ri),
 		}
     }
@@ -2129,6 +2138,58 @@ pub fn get_write_configuration(resource_identity: ResourceIdentity) -> WriteConf
 			.trim_path_start("/users/{user-id}")
 			.build()
 			.unwrap(),
+
+		ResourceIdentity::RoleManagement => WriteConfiguration::builder(resource_identity)
+			.filter_path(vec!["directory", "entitlementManagement"])
+			.children(vec![
+				get_write_configuration(ResourceIdentity::RoleManagementDirectory),
+			])
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectory => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagement, resource_identity)
+			.path("/directory")
+			.filter_path(vec![
+				"roleAssignmentSchedules",
+				"roleAssignmentScheduleRequests",
+				"roleAssignments",
+				"roleEligibilityScheduleInstances",
+				"roleEligibilityScheduleRequests",
+				"roleEligibilitySchedules",
+			])
+			.trim_path_start("/roleManagement")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleAssignments => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleAssignments")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleAssignmentSchedules => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleAssignmentSchedules")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleAssignmentRequests => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleAssignmentRequests")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleEligibilitySchedules => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleEligibilitySchedules")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleInstances => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleEligibilityScheduleInstances")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+		ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleRequests => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
+			.path("/roleEligibilityScheduleRequests")
+			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+
 		_ => WriteConfiguration::builder(resource_identity)
 			.build()
 			.unwrap(),

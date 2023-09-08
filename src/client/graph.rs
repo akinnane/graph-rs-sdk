@@ -53,6 +53,7 @@ use crate::places::PlacesApiClient;
 use crate::planner::PlannerApiClient;
 use crate::policies::PoliciesApiClient;
 use crate::reports::ReportsApiClient;
+use crate::role_management::RoleManagementApiClient;
 use crate::schema_extensions::{SchemaExtensionsApiClient, SchemaExtensionsIdApiClient};
 use crate::service_principals::{ServicePrincipalsApiClient, ServicePrincipalsIdApiClient};
 use crate::sites::{SitesApiClient, SitesIdApiClient};
@@ -361,6 +362,8 @@ impl Graph {
     api_client_impl!(policies, PoliciesApiClient);
 
     api_client_impl!(reports, ReportsApiClient);
+
+    api_client_impl!(role_management, RoleManagementApiClient);
 
     api_client_impl!(
         schema_extensions,

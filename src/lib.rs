@@ -285,6 +285,7 @@ pub mod places;
 pub mod planner;
 pub mod policies;
 pub mod reports;
+pub mod role_management;
 pub mod schema_extensions;
 pub mod service_principals;
 pub mod sites;
