@@ -287,6 +287,7 @@ pub mod policies;
 pub mod reports;
 pub mod role_management;
 pub mod schema_extensions;
+pub mod security;
 pub mod service_principals;
 pub mod sites;
 pub mod subscribed_skus;

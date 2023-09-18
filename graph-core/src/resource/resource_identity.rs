@@ -204,6 +204,7 @@ pub enum ResourceIdentity {
     ScopedRoleMemberships,
     Search,
     Security,
+    SecuritySecureScores,
     ServicePrincipals,
     ServicePrincipalsOwners,
     Settings,
@@ -372,6 +373,7 @@ impl ToString for ResourceIdentity {
             ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleInstances => "roleEligibilityScheduleInstances".into(),
             ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleRequests => "roleEligibilityScheduleRequests".into(),
             ResourceIdentity::RoleManagementDirectoryRoleEligibilitySchedules => "roleEligibilitySchedules".into(),
+            ResourceIdentity::SecuritySecureScores => "secureScores".into(),
             _ => self.as_ref().to_camel_case(),
         }
     }

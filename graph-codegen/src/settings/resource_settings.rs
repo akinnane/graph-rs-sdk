@@ -1062,6 +1062,11 @@ impl ResourceSettings {
 				.build()
 				.unwrap(),
 
+			ResourceIdentity::Security => ResourceSettings::builder(path_name, ri)
+				.imports(vec!["crate::security::*"])
+				.build()
+				.unwrap(),
+
 			_ => ResourceSettings::default(path_name, ri),
 		}
     }
@@ -2187,6 +2192,22 @@ pub fn get_write_configuration(resource_identity: ResourceIdentity) -> WriteConf
 		ResourceIdentity::RoleManagementDirectoryRoleEligibilityScheduleRequests => WriteConfiguration::second_level_builder(ResourceIdentity::RoleManagementDirectory, resource_identity)
 			.path("/roleEligibilityScheduleRequests")
 			.trim_path_start("/roleManagement/directory")
+			.build()
+			.unwrap(),
+
+		ResourceIdentity::Security => WriteConfiguration::builder(resource_identity)
+			.filter_path(vec![
+				"alerts",
+				"attackSimulation",
+				"cases",
+				"incidents",
+				"microsoft.graph.security.runHuntingQuery",
+				"secureScoreControlProfiles",
+				"subjectRightsRequests",
+				"threatIntelligence",
+				"triggerTypes",
+				"triggers",
+			])
 			.build()
 			.unwrap(),
 

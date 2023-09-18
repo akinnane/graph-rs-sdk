@@ -55,6 +55,7 @@ use crate::policies::PoliciesApiClient;
 use crate::reports::ReportsApiClient;
 use crate::role_management::RoleManagementApiClient;
 use crate::schema_extensions::{SchemaExtensionsApiClient, SchemaExtensionsIdApiClient};
+use crate::security::SecurityApiClient;
 use crate::service_principals::{ServicePrincipalsApiClient, ServicePrincipalsIdApiClient};
 use crate::sites::{SitesApiClient, SitesIdApiClient};
 use crate::subscribed_skus::SubscribedSkusApiClient;
@@ -371,6 +372,8 @@ impl Graph {
         schema_extension,
         SchemaExtensionsIdApiClient
     );
+
+    api_client_impl!(security, SecurityApiClient);
 
     api_client_impl!(
         service_principals,
