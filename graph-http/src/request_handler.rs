@@ -390,19 +390,43 @@ impl Paging {
     ) -> impl Stream<Item = PagingResult<T>> + 'a {
         try_stream! {
             let (access_token, request) = self.0.default_request_builder_with_token().await?;
-            let response = request.send().await?;
+
+            let request = request.build()?;
+            let mut service = self.0.service.clone();
+
+            let response = service
+                .ready()
+                .await
+                .map_err(GraphFailure::from)?
+                .call(request)
+                .await
+                .map_err(GraphFailure::from)?;
+
             let (next, http_response) = Paging::http_response(response).await?;
             let mut next_link = next;
             yield http_response;
 
             while let Some(url) = next_link {
-                let response = self.0
+
+                let request = self
+                    .0
                     .inner
                     .inner
-                    .get(url)
+                    .request(
+                        self.0.request_components.method.clone(),
+                        url
+                    )
                     .bearer_auth(access_token.as_str())
-                    .send()
-                    .await?;
+                    .headers(self.0.request_components.headers.clone()).build()?;
+
+                let response = service
+                    .ready()
+                    .await
+                    .map_err(GraphFailure::from)?
+                    .call(request)
+                    .await
+                    .map_err(GraphFailure::from)?;
+
                 let (next, http_response) = Paging::http_response(response).await?;
                 next_link = next;
                 yield http_response;
